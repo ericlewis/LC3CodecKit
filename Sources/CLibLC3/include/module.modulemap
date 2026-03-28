@@ -1,0 +1,4 @@
+module CLibLC3 [system] {
+  header "lc3_bridge.h"
+  export *
+}
