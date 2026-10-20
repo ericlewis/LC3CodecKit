@@ -8,10 +8,35 @@ extern "C" {
 #endif
 
 typedef void *lc3_bridge_decoder_t;
+typedef void *lc3_bridge_encoder_t;
 
 int lc3_bridge_frame_samples(int dt_us, int sr_hz);
 int lc3_bridge_frame_bytes(int dt_us, int bitrate);
 int lc3_bridge_resolve_bitrate(int dt_us, int nbytes);
+
+unsigned lc3_bridge_encoder_size(int dt_us, int sr_hz);
+
+lc3_bridge_encoder_t lc3_bridge_setup_encoder(
+    int dt_us,
+    int sr_hz,
+    int sr_pcm_hz,
+    void *mem
+);
+
+int lc3_bridge_encode_s16(
+    lc3_bridge_encoder_t encoder,
+    const int16_t *pcm,
+    int stride,
+    int nbytes,
+    void *out
+);
+
+lc3_bridge_encoder_t lc3_bridge_reset_encoder(
+    int dt_us,
+    int sr_hz,
+    int sr_pcm_hz,
+    void *mem
+);
 
 unsigned lc3_bridge_decoder_size(int dt_us, int sr_hz);
 

@@ -1,9 +1,10 @@
 # LC3CodecKit
 
-A Swift package for decoding [LC3 (Low Complexity Communication Codec)](https://www.bluetooth.com/specifications/specs/low-complexity-communication-codec/) audio frames. LC3 is the standard audio codec for Bluetooth LE Audio.
+A Swift package for encoding and decoding [LC3 (Low Complexity Communication Codec)](https://www.bluetooth.com/specifications/specs/low-complexity-communication-codec/) audio frames. LC3 is the standard audio codec for Bluetooth LE Audio.
 
 ## Features
 
+- Encode 16-bit PCM audio to fixed-size LC3 frames
 - Decode LC3 frames to 16-bit PCM audio
 - Packet loss concealment (PLC) for dropped frames
 - Configurable frame duration, sample rate, and bitrate
@@ -35,6 +36,19 @@ Then add it as a dependency to your target:
 ```
 
 ## Usage
+
+### Encoding LC3 Frames
+
+```swift
+import LC3CodecKit
+
+// 16 kHz mono, 10 ms, 160 PCM samples -> 30-byte LC3 frame.
+let configuration = LC3Configuration(expectedBytesPerFrame: 30)
+let encoder = try LC3FrameEncoder(configuration: configuration)
+let frame = try encoder.encodeS16(samples: pcmSamples)
+```
+
+`pcmSamples` must contain exactly `encoder.samplesPerFrame` samples. Keep each encoder instance on one serial execution context; it retains state across frames. Call `reset()` to begin a new stream.
 
 ### Decoding LC3 Frames
 

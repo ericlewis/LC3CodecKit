@@ -14,6 +14,38 @@ int lc3_bridge_resolve_bitrate(int dt_us, int nbytes) {
     return lc3_resolve_bitrate(dt_us, nbytes);
 }
 
+unsigned lc3_bridge_encoder_size(int dt_us, int sr_hz) {
+    return lc3_encoder_size(dt_us, sr_hz);
+}
+
+lc3_bridge_encoder_t lc3_bridge_setup_encoder(
+    int dt_us,
+    int sr_hz,
+    int sr_pcm_hz,
+    void *mem
+) {
+    return (lc3_bridge_encoder_t)lc3_setup_encoder(dt_us, sr_hz, sr_pcm_hz, mem);
+}
+
+int lc3_bridge_encode_s16(
+    lc3_bridge_encoder_t encoder,
+    const int16_t *pcm,
+    int stride,
+    int nbytes,
+    void *out
+) {
+    return lc3_encode((lc3_encoder_t)encoder, LC3_PCM_FORMAT_S16, pcm, stride, nbytes, out);
+}
+
+lc3_bridge_encoder_t lc3_bridge_reset_encoder(
+    int dt_us,
+    int sr_hz,
+    int sr_pcm_hz,
+    void *mem
+) {
+    return (lc3_bridge_encoder_t)lc3_setup_encoder(dt_us, sr_hz, sr_pcm_hz, mem);
+}
+
 unsigned lc3_bridge_decoder_size(int dt_us, int sr_hz) {
     return lc3_decoder_size(dt_us, sr_hz);
 }

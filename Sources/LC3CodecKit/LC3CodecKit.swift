@@ -30,8 +30,11 @@ public struct LC3Configuration: Sendable {
 public enum LC3CodecError: LocalizedError {
     case invalidConfiguration(String)
     case unsupportedChannelCount(Int)
+    case encoderInitializationFailed
     case decoderInitializationFailed
+    case invalidSampleCount(expected: Int, actual: Int)
     case invalidFrameSize(expected: Int, actual: Int)
+    case encodeFailed(status: Int32)
     case decodeFailed(status: Int32)
     case resetFailed
 
@@ -40,15 +43,21 @@ public enum LC3CodecError: LocalizedError {
         case let .invalidConfiguration(reason):
             return "Invalid LC3 configuration: \(reason)"
         case let .unsupportedChannelCount(count):
-            return "Unsupported channel count \(count). Only mono decoding is currently supported."
+            return "Unsupported channel count \(count). Only mono audio is currently supported."
+        case .encoderInitializationFailed:
+            return "Failed to initialize LC3 encoder"
         case .decoderInitializationFailed:
             return "Failed to initialize LC3 decoder"
+        case let .invalidSampleCount(expected, actual):
+            return "Invalid PCM sample count \(actual), expected \(expected)"
         case let .invalidFrameSize(expected, actual):
             return "Invalid LC3 frame size \(actual), expected \(expected)"
+        case let .encodeFailed(status):
+            return "LC3 encode failed with status \(status)"
         case let .decodeFailed(status):
             return "LC3 decode failed with status \(status)"
         case .resetFailed:
-            return "Failed to reset LC3 decoder"
+            return "Failed to reset LC3 codec"
         }
     }
 }
